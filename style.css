@@ -25,3 +25,57 @@ body {
   height: 100px;
   border-radius: 16px 16px 0 0;
 }
+
+
+.formulario {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 20px;
+  border-radius: 12px;
+  width: 400px;
+  margin: 0 auto;
+  gap:20px
+}
+
+/* Estilos del select */
+select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #d1d1d6;
+  background-color: #f9f9f9;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  appearance: none;
+  transition: all 0.2s ease;
+}
+
+select:focus {
+  outline: none;
+  border-color: #0071e3;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.3);
+}
+
+/* Estilos del botón submit */
+input[type="submit"] {
+  width: 50%;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  background-color: #0071e3;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover {
+  background-color: #005bb5;
+}
+
+input[type="submit"]:active {
+  background-color: #004391;
+  transform: scale(0.98);
+}

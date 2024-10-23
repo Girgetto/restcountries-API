@@ -1,23 +1,53 @@
-const cardTemplate = function (/* You can pass the data here*/) {
-  return `<div class="card">
-              <img id="flag-image" src="ADD THE IMAGE LINK HERE" alt="flag" />
-              <h1 class="center">ADD COUNTRY NAME HERE</h1>
-            </div>`;
+const cardTemplate = (pais) => {
+  const { name, flags } = pais;
+  return `<img id="flag-image" src="${flags.png}" alt="flag" />
+              <h1 class="center">${name.common}</h1>`;
 };
 
 const countriesNode = document.getElementById("countries");
 
-fetch(/* Need the provide API URL to get all countries */)
+const urlApiCount = "https://restcountries.com/v3.1/all";
+
+fetch(urlApiCount)
   .then(function (response) {
-    // fetch() returns a promise containing the response (a Response object).
-    // This is just an HTTP response, not the actual JSON. 
-    // To extract the JSON body content from the response, 
-    // we use the json() method and pass it into the next .then()
+    return (json = response.json());
   })
   .then(function (countries) {
-    // Here is where you'll need to add into the DOM all the countries received from API 
-
-    // 1 - We will need to iterate the countries variable with a loop
-    // 2 - You can use the cardTemplate() function to create a div with a class card already styled
-    // 💡 you can use countriesNode variable to add elements
+    countries.forEach((country) => {
+      const respuesta = cardTemplate(country);
+      const div = document.createElement("div");
+      div.className = "card";
+      div.innerHTML = respuesta;
+      countriesNode.appendChild(div);
+    });
   });
+
+const filtrar = (e) => {
+  e.preventDefault();
+  const valorSelect = e.target[0].value;
+  let url;
+  valorSelect === "Todos" ? url = "all" : url = 'region/' + valorSelect
+  filtrarApi(url)
+};
+const btnSubmit = document.getElementById("formulario");
+btnSubmit.addEventListener("submit", filtrar);
+
+
+const filtrarApi = async(url) =>{
+  countriesNode.innerHTML = ""
+  const urlCustom = `https://restcountries.com/v3.1/${url}`
+  fetch(urlCustom)
+  .then(function (response) {
+    return (json = response.json());
+  })
+  .then(function (countries) {
+    countries.forEach((country) => {
+      const respuesta = cardTemplate(country);
+      const div = document.createElement("div");
+      div.className = "card";
+      div.innerHTML = respuesta;
+      countriesNode.appendChild(div);
+    });
+  });
+  
+}
