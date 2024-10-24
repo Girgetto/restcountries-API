@@ -1,23 +1,55 @@
-const cardTemplate = function (/* You can pass the data here*/) {
-  return `<div class="card">
-              <img id="flag-image" src="ADD THE IMAGE LINK HERE" alt="flag" />
-              <h1 class="center">ADD COUNTRY NAME HERE</h1>
-            </div>`;
+const cardTemplate = (country) => {
+  const countryUrl = `https://restcountries.com/v3.1/name/${country.name.common}`;
+  return (
+    `<a class="link" href="${countryUrl}" target="_blank">
+      <div class="card">
+        <img id="flag-image" src="${country.flags.png}" alt="flag" />
+        <h1 class="center">${country.name.common}</h1>
+      </div>
+    </a>`
+  );
 };
 
 const countriesNode = document.getElementById("countries");
+const countriesApi = "https://restcountries.com/v3.1/all";
+let allCountries = [];
 
-fetch(/* Need the provide API URL to get all countries */)
-  .then(function (response) {
-    // fetch() returns a promise containing the response (a Response object).
-    // This is just an HTTP response, not the actual JSON. 
-    // To extract the JSON body content from the response, 
-    // we use the json() method and pass it into the next .then()
+fetch(countriesApi)
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error("La solicitud ha fallado");
+    }
+    return response.json();
   })
-  .then(function (countries) {
-    // Here is where you'll need to add into the DOM all the countries received from API 
-
-    // 1 - We will need to iterate the countries variable with a loop
-    // 2 - You can use the cardTemplate() function to create a div with a class card already styled
-    // 💡 you can use countriesNode variable to add elements
+  .then((countries) => {
+    allCountries = countries;
+    const sortedCountries = countries.sort((a, b) => a.name.common.localeCompare(b.name.common));
+    renderCountries(sortedCountries);
+  })
+  .catch((error) => {
+    console.log(error);
   });
+
+const renderCountries = (countries) => {
+  countriesNode.innerHTML = '';
+  countries.forEach((country) => {
+    const card = cardTemplate(country);
+    countriesNode.innerHTML += card;
+  });
+};
+
+const filterByContinent = (continent) => {
+  let filteredCountries = [];
+
+  if(continent === 'Americas') {
+    filteredCountries = allCountries.filter(country => {
+       return country.continents.includes('North America') || country.continents.includes('South America');
+    });
+
+  } else {
+    filteredCountries = allCountries.filter(country => {
+       return country.continents.includes(continent)});
+  };
+  
+  renderCountries(filteredCountries);
+};
