@@ -1,4 +1,7 @@
-const cardTemplate = function (/* You can pass the data here*/) {
+const cardTemplate = function (countries) {
+  const source = 'https://restcountries.com/v3.1/name/{name}'
+  
+
   return `<div class="card">
               <img id="flag-image" src="ADD THE IMAGE LINK HERE" alt="flag" />
               <h1 class="center">ADD COUNTRY NAME HERE</h1>
@@ -20,4 +23,4 @@ fetch(/* Need the provide API URL to get all countries */)
     // 1 - We will need to iterate the countries variable with a loop
     // 2 - You can use the cardTemplate() function to create a div with a class card already styled
     // 💡 you can use countriesNode variable to add elements
-  });
+  });$
